@@ -29,7 +29,7 @@ CFG='experiments/coco/omnipose_w48_384x288.yaml'
 OPTS=None
 MODELDIR=''
 LOGDIR=''
-DATADIR=''
+DATADIR='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/data/coco'
 PREVMODELDIR=''
 
 python train.py \

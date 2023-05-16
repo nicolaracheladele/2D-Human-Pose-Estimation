@@ -28,7 +28,7 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 import matplotlib.patches as mpatches
 
-import _init_paths
+# import _init_paths
 from config import cfg
 from config import update_config
 from core.loss import JointsMSELoss
@@ -40,8 +40,8 @@ import cython
 import dataset
 import models
 from models.omnipose import OmniPose, get_omnipose
-from models.omnipose import get_Canny_HRNet
-from models.frankenstein import get_frankenstein
+# from models.omnipose import get_Canny_HRNet        # MISSING FUNCTION
+# from models.frankenstein import get_frankenstein   # MISSING FILE
 from core.inference import get_final_preds_no_transform
 
 

@@ -33,12 +33,14 @@ CFG='experiments/coco/omnipose_w48_384x288.yaml'
 # DATADIR=''
 # PREVMODELDIR=''
 
+export PYTHONPATH="${PYTHONPATH}:/home/ramdass/2D-Human-Pose-Estimation/OmniPose"
+
 python inference.py \
-  --cfg="$CFG
+  --cfg="$CFG"
 
 # python demo_samples.py \
 # 	--dataset COCO \
-#     --prediction output/coco/omnipose/OmniPose_HRw48_v2/results/keypoints_val2017_results_0.json \
+#     --prediction /home/ramdass/2D-Human-Pose-Estimation/OmniPose/output/demo/demo0.json \
 #     --save-path visualization/coco/
 
 # python demo_samples.py \
