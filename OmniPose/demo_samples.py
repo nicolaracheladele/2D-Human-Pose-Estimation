@@ -72,7 +72,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Visualize COCO predictions')
     parser.add_argument('--dataset', type=str, default='COCO')
     parser.add_argument('--image-path', help='Path of COCO val images',
-                        type=str, default='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/data/coco/coco/images/val2017')
+                        type=str, default='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/data/coco/coco/images/val2017/')
     parser.add_argument('--gt-anno', help='Path of COCO val annotation', type=str,
                         default='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/data/coco/coco/annotations/person_keypoints_val2017.json')
     parser.add_argument('--save-path',help="Path to save the visualizations", type=str, default='samples/')

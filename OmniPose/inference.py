@@ -97,9 +97,9 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Visualize COCO predictions')
     parser.add_argument('--dataset', type=str, default='COCO')
     parser.add_argument('--image-path', help='Path of COCO val images',
-                        type=str, default='/home/bm3768/Desktop/research/dataset/COCO/val2017/')
+                        type=str, default='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/data/coco/coco/images/val2017/')
     parser.add_argument('--gt-anno', help='Path of COCO val annotation', type=str,
-                        default='/home/bm3768/Desktop/research/dataset/COCO/person_keypoints_val2017.json')
+                        default='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/data/coco/coco/annotations/person_keypoints_val2017.json')
     parser.add_argument('--save-path',help="Path to save the visualizations", type=str, default='samples/')
     parser.add_argument('--prediction', help="Prediction file to visualize", type=str, required=True)
     args = parser.parse_args()
@@ -163,7 +163,8 @@ def plot_COCO_image(preds, img_path, save_path, link_pairs, ring_color, color_id
     plt.subplots_adjust(top=1,bottom=0,left=0,right=1,hspace=0,wspace=0)        
     plt.margins(0,0)
     print(save_path)
-    plt.savefig(save_path, format='jpg', bbox_inckes='tight', dpi=100)
+    # plt.savefig(save_path, format='jpg', bbox_inckes='tight', dpi=100)
+    plt.savefig(save_path, format='jpg')
     plt.close()
 
 
@@ -202,7 +203,7 @@ def main(args):
 
     if cfg.TEST.MODEL_FILE:
         logger.info("=> loading checkpoint '{}'".format(cfg.TEST.MODEL_FILE))
-        checkpoint = torch.load(cfg.TEST.MODEL_FILE)
+        checkpoint = torch.load(cfg.TEST.MODEL_FILE, map_location="cpu")
         best_perf = checkpoint['perf']
 
         model_state_dict = model.state_dict()
@@ -220,12 +221,10 @@ def main(args):
 
         model.load_state_dict(new_model_state_dict, strict=False)
     else:
-        model_state_file = os.path.join(
-            final_output_dir, 'final_state.pth'
-        )
+        model_state_file = cfg.TEST.MODEL_PATH
         logger.info('=> loading model from {}'.format(model_state_file))
 
-        model_state_dict = torch.load(model_state_file)
+        model_state_dict = torch.load(model_state_file, map_location="cpu")
         new_model_state_dict = {}
         for k in model_state_dict:
             if k in model_state_dict and model_state_dict[k].size() == model_state_dict[k].size():
@@ -235,7 +234,7 @@ def main(args):
 
         model.load_state_dict(new_model_state_dict)
 
-    model = model.cuda()
+    # model = model.cuda()
 
     # Data loading code
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
@@ -243,8 +242,8 @@ def main(args):
 
     model.eval()
 
-    files_loc = '/home/bm3768/Desktop/research/dataset/NSL/9303/195KB_1'
-    images = os.listdir(files_loc)
+    files_loc = os.path.join(cfg.DATASET.ROOT, "images/test2017")
+    images = os.listdir(files_loc)[:5]
 
     for idx in range(len(images)):
         print(idx,"/",len(images))
@@ -259,15 +258,16 @@ def main(args):
         input = torch.zeros((1,3,data_numpy.shape[1], data_numpy.shape[2]))
         input[0] = data_numpy
 
-        input = input.cuda()
+        # input = input.cuda()
 
         outputs = model(input)
 
-        preds, maxvals = get_final_preds_no_transform(cfg, outputs.detach().cpu().numpy())
+        # preds, maxvals = get_final_preds_no_transform(cfg, outputs.detach().cpu().numpy())
+        preds, maxvals = get_final_preds_no_transform(cfg, outputs.detach().numpy())
 
         colorstyle = artacho_style
 
-        plot_COCO_image(4*preds, img_path, 'samples/NSL/9303/195KB_1/'+images[idx], colorstyle.link_pairs, colorstyle.ring_color, colorstyle.color_ids, save=True)
+        plot_COCO_image(4*preds, img_path, 'OmniPose/samples/coco/test/'+images[idx], colorstyle.link_pairs, colorstyle.ring_color, colorstyle.color_ids, save=True)
 
 if __name__ == '__main__':
     arg = parse_args()
