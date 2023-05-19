@@ -48,9 +48,10 @@ def train(config, train_loader, model, criterion, optimizer, epoch,
         # measure data loading time
         data_time.update(time.time() - end)
 
-        input  = input.cuda()
-        target = target.cuda()
-        target_weight = target_weight.cuda()
+        if torch.cuda.is_available():
+            input  = input.cuda()
+            target = target.cuda()
+            target_weight = target_weight.cuda()
 
         # compute output
         # print(model)
@@ -141,9 +142,10 @@ def validate(config, val_loader, val_dataset, dataset_name, model, criterion, ou
         tbar = tqdm(val_loader)
 
         for i, (input, target, target_weight, meta) in enumerate(tbar):
-            input  = input.cuda()
-            target = target.cuda()
-            target_weight = target_weight.cuda()
+            if torch.cuda.is_available():
+                input  = input.cuda()
+                target = target.cuda()
+                target_weight = target_weight.cuda()
 
             outputs = model(input)
             if isinstance(outputs, list):
@@ -154,8 +156,12 @@ def validate(config, val_loader, val_dataset, dataset_name, model, criterion, ou
             if config.TEST.FLIP_TEST:
                 # this part is ugly, because pytorch has not supported negative index
                 # input_flipped = model(input[:, :, :, ::-1])
-                input_flipped = np.flip(input.cpu().numpy(), 3).copy()
-                input_flipped = torch.from_numpy(input_flipped).cuda()
+                if torch.cuda.is_available():
+                    input_flipped = np.flip(input.cpu().numpy(), 3).copy()
+                    input_flipped = torch.from_numpy(input_flipped).cuda()
+                else:
+                    input_flipped = np.flip(input.numpy(), 3).copy()
+                    input_flipped = torch.from_numpy(input_flipped)
                 outputs_flipped = model(input_flipped)
 
                 if isinstance(outputs_flipped, list):
@@ -163,9 +169,15 @@ def validate(config, val_loader, val_dataset, dataset_name, model, criterion, ou
                 else:
                     output_flipped = outputs_flipped
 
-                output_flipped = flip_back(output_flipped.cpu().numpy(),
-                                           val_dataset.flip_pairs)
-                output_flipped = torch.from_numpy(output_flipped.copy()).cuda()
+                if torch.cuda.is_available():
+                    output_flipped = flip_back(output_flipped.cpu().numpy(),
+                                            val_dataset.flip_pairs)
+                    output_flipped = torch.from_numpy(output_flipped.copy()).cuda()
+
+                else:
+                    output_flipped = flip_back(output_flipped.numpy(),
+                                            val_dataset.flip_pairs)
+                    output_flipped = torch.from_numpy(output_flipped.copy())
 
                 output = (output + output_flipped) * 0.5
 
@@ -177,8 +189,12 @@ def validate(config, val_loader, val_dataset, dataset_name, model, criterion, ou
             num_images = input.size(0)
             # measure accuracy and record loss
             losses.update(loss.item(), num_images)
-            _, avg_acc, cnt, pred = accuracy(output.cpu().numpy(),
-                                             target.cpu().numpy())
+            if torch.cuda.is_available():
+                _, avg_acc, cnt, pred = accuracy(output.cpu().numpy(),
+                                                target.cpu().numpy())
+            else:
+                _, avg_acc, cnt, pred = accuracy(output.numpy(),
+                                                target.numpy())
 
             acc.update(avg_acc, cnt)
 
@@ -190,8 +206,12 @@ def validate(config, val_loader, val_dataset, dataset_name, model, criterion, ou
             s = meta['scale'].numpy()
             score = meta['score'].numpy()
 
-            preds, maxvals = get_final_preds(
-                config, output.clone().cpu().numpy(), c, s)
+            if torch.cuda.is_available():
+                preds, maxvals = get_final_preds(
+                    config, output.clone().cpu().numpy(), c, s)
+            else:
+                preds, maxvals = get_final_preds(
+                    config, output.clone().numpy(), c, s)
 
             all_preds[idx:idx + num_images, :, 0:2] = preds[:, :, 0:2]
             all_preds[idx:idx + num_images, :, 2:3] = maxvals

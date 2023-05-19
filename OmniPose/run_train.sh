@@ -27,7 +27,7 @@ CFG='experiments/coco/omnipose_w48_384x288.yaml'
 # CFG='experiments/coco/hrnet_w48_384x288.yaml'
 
 OPTS=None
-MODELDIR=''
+MODELDIR='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/trained'
 LOGDIR=''
 DATADIR='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/data/coco'
 PREVMODELDIR=''

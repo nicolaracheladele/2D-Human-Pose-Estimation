@@ -79,10 +79,10 @@ def main(args):
         model = get_omnipose(cfg, is_train=True)
 
     # copy model file
-    this_dir = os.path.dirname(__file__)
-    command_line = 'cp models/' + cfg.MODEL.NAME + '.py ' + final_output_dir
-    os.system('mkdir '+ final_output_dir)
-    os.system(command_line)
+    # this_dir = os.path.dirname(__file__)
+    # command_line = 'cp models/' + cfg.MODEL.NAME + '.py ' + final_output_dir
+    # os.system('mkdir '+ final_output_dir)
+    # os.system(command_line)
 
     writer_dict = {
         'writer': SummaryWriter(log_dir=tb_log_dir),
@@ -90,12 +90,15 @@ def main(args):
         'valid_global_steps': 0,}
 
     dump_input = torch.rand((1, 3, cfg.MODEL.IMAGE_SIZE[1], cfg.MODEL.IMAGE_SIZE[0]))
-    logger.info(get_model_summary(model, dump_input))
+    # logger.info(get_model_summary(model, dump_input))
 
-    model = model.cuda()
+    if torch.cuda.is_available():
+        model = model.cuda()    
 
     # Define loss function and optimizer
-    criterion = JointsMSELoss(use_target_weight=cfg.LOSS.USE_TARGET_WEIGHT).cuda()
+    criterion = JointsMSELoss(use_target_weight=cfg.LOSS.USE_TARGET_WEIGHT)
+    if torch.cuda.is_available():
+        criterion = criterion.cuda()
 
     # Data loading code
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
@@ -133,7 +136,7 @@ def main(args):
     if cfg.AUTO_RESUME and os.path.exists(checkpoint_file):
         logger.info("=> loading checkpoint '{}'".format(checkpoint_file))
         checkpoint = torch.load(checkpoint_file)
-        print('Loading checkpoint with accuracy of 'checkpoint['perf'], 'at epoch ',checkpoint['epoch'])
+        print('Loading checkpoint with accuracy of ', checkpoint['perf'], 'at epoch ',checkpoint['epoch'])
         begin_epoch = checkpoint['epoch']
         best_perf = checkpoint['perf']
         last_epoch = checkpoint['epoch']
