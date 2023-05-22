@@ -13,7 +13,7 @@
 # ========================================= #
 # CFG='experiments/coco/omnipose_w48_128x96.yaml'
 # CFG='experiments/coco/omnipose_w48_256x192.yaml'
-CFG='experiments/coco/omnipose_w48_384x288.yaml'
+CFG='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/experiments/coco/omnipose_w48_384x288.yaml'
 
 # ========================================= #
 #            HRnet on MPII Dataset
@@ -35,7 +35,7 @@ CFG='experiments/coco/omnipose_w48_384x288.yaml'
 
 export PYTHONPATH="${PYTHONPATH}:/home/ramdass/2D-Human-Pose-Estimation/OmniPose"
 
-python inference.py \
+~/miniconda3/envs/hpe/bin/python OmniPose/inference.py \
   --cfg="$CFG"
 
 # python demo_samples.py \

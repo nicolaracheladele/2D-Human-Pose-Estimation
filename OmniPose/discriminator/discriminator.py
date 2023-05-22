@@ -3,8 +3,8 @@ import torchvision
 import torch.nn as nn
 import torch.nn.functional as F
 
-from modules import Residual
-from modules import ListModule
+from discriminator.modules import Residual
+from discriminator.modules import ListModule
 
 class Discriminator(nn.Module):
 

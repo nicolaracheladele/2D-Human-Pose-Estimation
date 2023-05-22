@@ -26,6 +26,21 @@
                     "--prevModelDir", ""],
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+
+        {
+            "name": "GAN Training",
+            "type": "python",
+            "request": "launch",
+            "program": "OmniPose/train_GAN.py",
+            "args": ["--cfg", "/home/ramdass/2D-Human-Pose-Estimation/OmniPose/experiments/coco/omnipose_w48_384x288_train.yaml",
+                    "--opts", "None", 
+                    "--modelDir", "/home/ramdass/2D-Human-Pose-Estimation/OmniPose/trained", 
+                    "--logDir", "", 
+                    "--dataDir", "/home/ramdass/2D-Human-Pose-Estimation/OmniPose/data/coco", 
+                    "--prevModelDir", ""],
+            "console": "integratedTerminal",
+            "justMyCode": true
         }
     ]
 }

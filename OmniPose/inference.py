@@ -234,7 +234,8 @@ def main(args):
 
         model.load_state_dict(new_model_state_dict)
 
-    # model = model.cuda()
+    if torch.cuda.is_available():
+        model = model.cuda()    
 
     # Data loading code
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
@@ -242,8 +243,8 @@ def main(args):
 
     model.eval()
 
-    files_loc = os.path.join(cfg.DATASET.ROOT, "images/test2017")
-    images = os.listdir(files_loc)[:5]
+    files_loc = os.path.join(cfg.DATASET.ROOT, "images/val2017")
+    images = os.listdir(files_loc)
 
     for idx in range(len(images)):
         print(idx,"/",len(images))
@@ -258,16 +259,19 @@ def main(args):
         input = torch.zeros((1,3,data_numpy.shape[1], data_numpy.shape[2]))
         input[0] = data_numpy
 
-        # input = input.cuda()
+        if torch.cuda.is_available():
+            input = input.cuda()
 
         outputs = model(input)
-
-        # preds, maxvals = get_final_preds_no_transform(cfg, outputs.detach().cpu().numpy())
-        preds, maxvals = get_final_preds_no_transform(cfg, outputs.detach().numpy())
+        if torch.cuda.is_available():
+            preds, maxvals = get_final_preds_no_transform(cfg, outputs.detach().cpu().numpy())
+        else:
+            preds, maxvals = get_final_preds_no_transform(cfg, outputs.detach().numpy())
 
         colorstyle = artacho_style
 
-        plot_COCO_image(4*preds, img_path, 'OmniPose/samples/coco/test/'+images[idx], colorstyle.link_pairs, colorstyle.ring_color, colorstyle.color_ids, save=True)
+        if idx <= 20:
+           plot_COCO_image(4*preds, img_path, 'OmniPose/samples/coco/test/'+images[idx], colorstyle.link_pairs, colorstyle.ring_color, colorstyle.color_ids, save=True)
 
 if __name__ == '__main__':
     arg = parse_args()

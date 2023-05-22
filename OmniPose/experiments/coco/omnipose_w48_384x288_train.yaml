@@ -30,11 +30,11 @@ MODEL:
   PRETRAINED: 'weights/coco/OmniPose_w48_v2/model_best.pth'
   TARGET_TYPE: gaussian
   IMAGE_SIZE:
-  - 288
-  - 384
+  - 64
+  - 64
   HEATMAP_SIZE:
-  - 72
-  - 96
+  - 64
+  - 64
   SIGMA: 3
   EXTRA:
     PRETRAINED_LAYERS:
@@ -94,7 +94,7 @@ LOSS:
 TRAIN:
   BATCH_SIZE_PER_GPU: 12
   BEGIN_EPOCH: 0
-  END_EPOCH: 210
+  END_EPOCH: 20
   OPTIMIZER: adam
   LR: 0.0001
   LR_FACTOR: 0.1

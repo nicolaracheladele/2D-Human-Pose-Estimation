@@ -56,7 +56,9 @@ def train(config, train_loader, model, criterion, optimizer, epoch,
         # compute output
         # print(model)
         outputs = model(input)
-        
+        # print("type of outputs: ", type(outputs))
+        # print("shape of tensor: ", outputs.shape)
+        # exit(0)
         # quit()
 
         # target = target.cuda(non_blocking=True)

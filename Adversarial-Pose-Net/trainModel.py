@@ -182,6 +182,9 @@ def evaluate_model(args, epoch, val_loader, fast_device, generator_model, discri
         
     return gen_loss, disc_loss
 
+
+
+
 val_pos = 0
 for epoch in range(args.epochs):
     print('epoch:', epoch)
