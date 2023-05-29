@@ -3,7 +3,7 @@
 #SBATCH --nodes 1
 #SBATCH --ntasks 1
 #SBATCH --cpus-per-task 1
-#SBATCH --mem 8G
+#SBATCH --mem 50G
 #SBATCH --partition gpu
 #SBATCH --gres gpu:2
 #SBATCH --qos dlav

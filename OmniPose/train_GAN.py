@@ -208,7 +208,15 @@ def main(args):
                 'optimizer': optimizer_generator.state_dict(),
             }, best_model, final_output_dir)
 
-            # TODO: save discriminator
+            logger.info('=> saving discriminator checkpoint to {}'.format(final_output_dir))
+            save_checkpoint({
+                'epoch': epoch + 1,
+                'discriminator': cfg.MODEL.NAME,
+                'state_dict': discriminator.state_dict(),
+                'best_state_dict': discriminator.state_dict(),
+                'perf': perf_indicator,
+                'optimizer': optimizer_discriminator.state_dict(),
+            }, best_model, final_output_dir)
 
         else:
             best_model = False
@@ -279,7 +287,8 @@ def train_GAN(cfg, train_loader,
     avg_gen_loss = 0
 
     for i, (input, target, target_weight, meta) in enumerate(tbar):
-
+        # if i == 100:
+        #     break
         # input_resized = _resize_images_batch(input, dest_size=(cfg.MODEL.HEATMAP_SIZE[1], cfg.MODEL.HEATMAP_SIZE[0]))
         if torch.cuda.is_available():
             input  = input.cuda()
@@ -292,7 +301,7 @@ def train_GAN(cfg, train_loader,
         optimizer_discriminator.zero_grad()
         outputs = model(input)
         disc_real = discriminator(torch.cat([target, input], axis=1))
-        print("input shape:", input.shape, "target: ", target.shape, "outputs:", outputs.shape)
+        # print("input shape:", input.shape, "target: ", target.shape, "outputs:", outputs.shape)
         disc_fake = discriminator(torch.cat([outputs, input], axis=1))
         loss_disc = get_loss_disc(disc_fake, disc_real)
 

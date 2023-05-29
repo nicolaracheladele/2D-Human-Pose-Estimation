@@ -100,7 +100,7 @@ def parse_args():
                         type=str, default='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/data/coco/coco/images/val2017/')
     parser.add_argument('--gt-anno', help='Path of COCO val annotation', type=str,
                         default='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/data/coco/coco/annotations/person_keypoints_val2017.json')
-    parser.add_argument('--save-path',help="Path to save the visualizations", type=str, default='samples/')
+    parser.add_argument('--save-path',help="Path to save the visualizations", type=str, default='samples/GAN/')
     parser.add_argument('--prediction', help="Prediction file to visualize", type=str, required=True)
     args = parser.parse_args()
 
@@ -120,7 +120,7 @@ def map_joint_dict(joints):
 def plot_COCO_image(preds, img_path, save_path, link_pairs, ring_color, color_ids, save=True):
     # Read Images
     data_numpy = cv2.imread(img_path, cv2.IMREAD_COLOR | cv2.IMREAD_IGNORE_ORIENTATION)
-    data_numpy = cv2.resize(data_numpy, (384,288), interpolation = cv2.INTER_AREA)
+    data_numpy = cv2.resize(data_numpy, (384*4,288*4), interpolation = cv2.INTER_AREA)
     h = data_numpy.shape[0]
     w = data_numpy.shape[1]
     
@@ -270,8 +270,8 @@ def main(args):
 
         colorstyle = artacho_style
 
-        if idx <= 20:
-           plot_COCO_image(4*preds, img_path, 'OmniPose/samples/coco/test/'+images[idx], colorstyle.link_pairs, colorstyle.ring_color, colorstyle.color_ids, save=True)
+        if idx < 20:
+           plot_COCO_image(4*preds, img_path, 'OmniPose/samples/coco/test/GAN'+images[idx], colorstyle.link_pairs, colorstyle.ring_color, colorstyle.color_ids, save=True)
 
 if __name__ == '__main__':
     arg = parse_args()

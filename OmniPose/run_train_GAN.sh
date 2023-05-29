@@ -12,7 +12,7 @@
 # ========================================= #
 # CFG='experiments/coco/omnipose_w48_128x96.yaml'
 # CFG='experiments/coco/omnipose_w48_256x192.yaml'
-CFG='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/experiments/coco/omnipose_w48_384x288_train.yaml'
+CFG='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/experiments/coco/omnipose_w48_128x96_train.yaml'
 
 export PYTHONPATH="${PYTHONPATH}:/home/ramdass/2D-Human-Pose-Estimation/OmniPose"
 
@@ -29,7 +29,7 @@ export PYTHONPATH="${PYTHONPATH}:/home/ramdass/2D-Human-Pose-Estimation/OmniPose
 # CFG='experiments/coco/hrnet_w48_384x288.yaml'
 
 OPTS=None
-MODELDIR='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/trained_GAN'
+MODELDIR='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/trained_GAN_2'
 LOGDIR=''
 DATADIR='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/data/coco'
 PREVMODELDIR=''
