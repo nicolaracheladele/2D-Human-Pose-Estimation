@@ -11,4 +11,4 @@
 #SBATCH --account civil-459-2023
 
 
-./OmniPose/run_train_GAN.sh
+./OmniPose/run_train_AN.sh

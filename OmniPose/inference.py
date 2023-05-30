@@ -270,7 +270,7 @@ def main(args):
 
         colorstyle = artacho_style
 
-        if idx < 20:
+        if idx % cfg.PRINT_FREQ:
            plot_COCO_image(4*preds, img_path, 'OmniPose/samples/coco/test/GAN'+images[idx], colorstyle.link_pairs, colorstyle.ring_color, colorstyle.color_ids, save=True)
 
 if __name__ == '__main__':

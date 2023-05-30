@@ -1,4 +1,4 @@
-AUTO_RESUME: false
+AUTO_RESUME: true
 CUDNN:
   BENCHMARK: true
   DETERMINISTIC: false
@@ -27,7 +27,7 @@ MODEL:
   INIT_WEIGHTS: true
   NAME: omnipose
   NUM_JOINTS: 17
-  PRETRAINED: /home/ramdass/2D-Human-Pose-Estimation/OmniPose/trained_GAN/coco/omnipose/omnipose_w48_384x288_train/model_best.pth
+  PRETRAINED: '/home/ramdass/2D-Human-Pose-Estimation/OmniPose/trained/coco/omnipose/omnipose_w48_384x288_train/model_best.pth'
   TARGET_TYPE: gaussian
   IMAGE_SIZE:
   - 64
@@ -94,7 +94,7 @@ LOSS:
 TRAIN:
   BATCH_SIZE_PER_GPU: 12
   BEGIN_EPOCH: 0
-  END_EPOCH: 20
+  END_EPOCH: 26
   OPTIMIZER: adam
   LR: 0.0001
   LR_FACTOR: 0.1
@@ -121,7 +121,6 @@ TEST:
   FLIP_TEST: true
   POST_PROCESS: true
   BLUR_KERNEL: 11
-  MODEL_PATH: "OmniPose/pre-trained/OmniPose_HRw48_384/model_best.pth"
 DEBUG:
   DEBUG: true
   SAVE_BATCH_IMAGES_GT: true

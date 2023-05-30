@@ -134,30 +134,30 @@ def main(args):
     begin_epoch = cfg.TRAIN.BEGIN_EPOCH
     checkpoint_file = os.path.join(final_output_dir, 'checkpoint.pth')
 
-    # if cfg.AUTO_RESUME and os.path.exists(checkpoint_file):
-    #     logger.info("=> loading checkpoint '{}'".format(checkpoint_file))
-    #     checkpoint = torch.load(checkpoint_file)
-    #     print('Loading checkpoint with accuracy of ', checkpoint['perf'], 'at epoch ',checkpoint['epoch'])
-    #     begin_epoch = checkpoint['epoch']
-    #     best_perf = checkpoint['perf']
-    #     last_epoch = checkpoint['epoch']
+    if cfg.AUTO_RESUME and os.path.exists(checkpoint_file):
+        logger.info("=> loading checkpoint '{}'".format(checkpoint_file))
+        checkpoint = torch.load(checkpoint_file)
+        print('Loading checkpoint with accuracy of ', checkpoint['perf'], 'at epoch ',checkpoint['epoch'])
+        begin_epoch = checkpoint['epoch']
+        best_perf = checkpoint['perf']
+        last_epoch = checkpoint['epoch']
 
-    #     model_state_dict = model.state_dict()
-    #     new_model_state_dict = {}
-    #     for k in model_state_dict:
-    #         if k in checkpoint['state_dict'] and model_state_dict[k].size() == checkpoint['state_dict'][k].size():
-    #             new_model_state_dict[k] = checkpoint['state_dict'][k]
-    #         else:
-    #             print('Skipped loading parameter {}'.format(k))
+        model_state_dict = model.state_dict()
+        new_model_state_dict = {}
+        for k in model_state_dict:
+            if k in checkpoint['state_dict'] and model_state_dict[k].size() == checkpoint['state_dict'][k].size():
+                new_model_state_dict[k] = checkpoint['state_dict'][k]
+            else:
+                print('Skipped loading parameter {}'.format(k))
 
-    #     model.load_state_dict(new_model_state_dict, strict=False)
+        model.load_state_dict(new_model_state_dict, strict=False)
 
     #     print('begin_epoch', begin_epoch)
     #     print('best_perf', best_perf)
     #     print('last_epoch',last_epoch)
 
-    #     optimizer.load_state_dict(checkpoint['optimizer'])
-    #     logger.info("=> loaded checkpoint '{}' (epoch {})".format(checkpoint_file, checkpoint['epoch']))
+        optimizer_generator.load_state_dict(checkpoint['optimizer'])
+        logger.info("=> loaded checkpoint '{}' (epoch {})".format(checkpoint_file, checkpoint['epoch']))
 
     lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(
         optimizer_generator, cfg.TRAIN.LR_STEP, cfg.TRAIN.LR_FACTOR,
@@ -208,15 +208,15 @@ def main(args):
                 'optimizer': optimizer_generator.state_dict(),
             }, best_model, final_output_dir)
 
-            logger.info('=> saving discriminator checkpoint to {}'.format(final_output_dir))
-            save_checkpoint({
-                'epoch': epoch + 1,
-                'discriminator': cfg.MODEL.NAME,
-                'state_dict': discriminator.state_dict(),
-                'best_state_dict': discriminator.state_dict(),
-                'perf': perf_indicator,
-                'optimizer': optimizer_discriminator.state_dict(),
-            }, best_model, final_output_dir)
+            # logger.info('=> saving discriminator checkpoint to {}'.format(final_output_dir))
+            # save_checkpoint({
+            #     'epoch': epoch + 1,
+            #     'discriminator': cfg.MODEL.NAME,
+            #     'state_dict': discriminator.state_dict(),
+            #     'best_state_dict': discriminator.state_dict(),
+            #     'perf': perf_indicator,
+            #     'optimizer': optimizer_discriminator.state_dict(),
+            # }, best_model, final_output_dir)
 
         else:
             best_model = False

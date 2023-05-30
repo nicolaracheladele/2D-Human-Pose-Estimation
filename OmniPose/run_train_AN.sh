@@ -12,7 +12,7 @@
 # ========================================= #
 # CFG='experiments/coco/omnipose_w48_128x96.yaml'
 # CFG='experiments/coco/omnipose_w48_256x192.yaml'
-CFG='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/experiments/coco/omnipose_w48_128x96_train.yaml'
+CFG='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/experiments/coco/omnipose_w48_384x288_train.yaml'
 
 export PYTHONPATH="${PYTHONPATH}:/home/ramdass/2D-Human-Pose-Estimation/OmniPose"
 
@@ -32,9 +32,9 @@ OPTS=None
 MODELDIR='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/trained_GAN_2'
 LOGDIR=''
 DATADIR='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/data/coco'
-PREVMODELDIR=''
+PREVMODELDIR='/home/ramdass/2D-Human-Pose-Estimation/OmniPose/trained/coco/omnipose/omnipose_w48_384x288_train'
 
-~/miniconda3/envs/hpe/bin/python OmniPose/train_GAN.py \
+~/miniconda3/envs/hpe/bin/python OmniPose/train_AN.py \
   --cfg="$CFG" \
   --opts="$OPTS" \
   --modelDir="$MODELDIR" \
